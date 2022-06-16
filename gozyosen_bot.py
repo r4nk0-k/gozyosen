@@ -17,38 +17,9 @@ MARKS = ["<:emoji_48:986146778279718912>", "<:gojo:836228626957074453>"]
 MARKS_SLOT = ["<:emoji_47:981211597093621771>", "<:emoji_46:981211581587279883>", "<:dayu_coume:929077269568294934>", "<:koume_another:937032580182728774>", "<:fushigidane:838103311734669393>", "<:seikintv:885186342907170906>", "<:chiikawa_bakemon:929075742296399954>", "<:emoji_48:986146778279718912>", "<:gojo:836228626957074453>"]
 MARKS_WACCA = ["<:su:986850329998028831>", "<:teki:986850365951578115>", "<:da:986850393357172757>", "<:ne:986850420439810078>"]
 
-def check_datetime(month, day):
-    if month > 12 or month <= 0:
-        return False
 
-    if day > 31 or day < 0:
-        return False
-    
-    if month not in HAS_31_DAYS_MONTH:
-        days = 30
-        if month == 2:
-            days = 28
-        if day > days:
-            return False
-
-    return True
-
-def lottery(marks, try_num):
-    results = []
-    for leel in range(try_num):
-        index = random.randint(0, len(marks)-1)
-        results.append(marks[index])
-
-    return results
-
-def check_match(results):
-    previous_r = results[0]
-    for r in results:
-        if previous_r != r:
-            return False
-    
-    return True
-
+# //////////////////////////////////////////////////////////////////////
+# commands 
 @bot.command(name="素敵だね")
 async def wacca(ctx):
     results = lottery(MARKS_WACCA, 4)
@@ -56,18 +27,6 @@ async def wacca(ctx):
     for r in results:
         txt = txt + r + " "
     await ctx.send(txt)
-
-async def do_slot(marks, ctx):
-    results = lottery(marks, 3)
-    txt = ""
-    for r in results:
-        txt = txt + r + " "
-
-    await ctx.send("ﾁﾝｯ")
-    await ctx.send(txt)
-
-    if check_match(results):
-        await ctx.send(GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + " < Congrats...")
 
 @bot.command(name="ごじょせんスロット")
 async def slot(ctx):
@@ -176,6 +135,8 @@ async def poll(ctx, question = None):
     for index in range(len(embed.fields) - 1):
         await message.add_reaction(EMOJI_NUM[index])
 
+# //////////////////////////////////////////////////////////////////////
+# event handler
 @bot.event
 async def on_raw_reaction_add(payload):
     user = await bot.fetch_user(payload.user_id)
@@ -238,6 +199,54 @@ async def on_raw_reaction_remove(payload):
 
         await message.edit(embed = embed)
 
+# //////////////////////////////////////////////////////////////////////
+# utility 
+def check_datetime(month, day):
+    if month > 12 or month <= 0:
+        return False
+
+    if day > 31 or day < 0:
+        return False
+    
+    if month not in HAS_31_DAYS_MONTH:
+        days = 30
+        if month == 2:
+            days = 28
+        if day > days:
+            return False
+
+    return True
+
+def lottery(marks, try_num):
+    results = []
+    for leel in range(try_num):
+        index = random.randint(0, len(marks)-1)
+        results.append(marks[index])
+
+    return results
+
+def check_match(results):
+    previous_r = results[0]
+    for r in results:
+        if previous_r != r:
+            return False
+    
+    return True
+
+async def do_slot(marks, ctx):
+    results = lottery(marks, 3)
+    txt = ""
+    for r in results:
+        txt = txt + r + " "
+
+    await ctx.send("ﾁﾝｯ")
+    await ctx.send(txt)
+
+    if check_match(results):
+        await ctx.send(GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + " < Congrats...")
+
+# //////////////////////////////////////////////////////////////////////
+# main
 if __name__ == "__main__":
     yaml_file = yaml.load(open('token.yaml').read(), Loader=yaml.SafeLoader)
     token = yaml_file['token_gozyosen']
