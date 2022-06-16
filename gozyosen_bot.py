@@ -240,12 +240,17 @@ async def do_slot(marks, ctx):
     line1 = ""
     line2 = ""
     message = await ctx.send("ｸﾞﾙｸﾞﾙｸﾞﾙｸﾞﾙ...")
+    message2 = None
     for r in results:
         await asyncio.sleep(0.3)
         line1 += "ﾁﾝｯ "
         line2 += r 
 
-        await message.edit(content=line1 + "\n" + line2)
+        await message.edit(content=line1)
+        if message2 is None:
+            message2 = await ctx.send(line2)
+        else:
+            await message2.edit(content=line2)
 
     if check_match(results):
         await ctx.send(GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + " < Congrats...")
