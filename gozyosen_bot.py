@@ -8,7 +8,8 @@ import random
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix='&', intents=intents)
 
-# for 
+# //////////////////////////////////////////////////////////////////////
+# constant definition
 EMOJI_NUM = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
 HAS_31_DAYS_MONTH = [1,3,4,7,8,10,12]
 
