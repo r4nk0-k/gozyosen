@@ -241,7 +241,7 @@ async def do_slot(marks, ctx):
     line2 = ""
     message = await ctx.send("ｸﾞﾙｸﾞﾙｸﾞﾙｸﾞﾙ...")
     for r in results:
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.3)
         line1 += "ﾁﾝｯ "
         line2 += r 
 
