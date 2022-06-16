@@ -4,6 +4,7 @@ import re
 import datetime
 import yaml
 import random
+import asyncio
 
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix='&', intents=intents)
@@ -236,12 +237,15 @@ def check_match(results):
 
 async def do_slot(marks, ctx):
     results = lottery(marks, 3)
-    txt = ""
+    line1 = ""
+    line2 = ""
+    message = await ctx.send("ｸﾞﾙｸﾞﾙｸﾞﾙｸﾞﾙ...")
     for r in results:
-        txt = txt + r + " "
+        await asyncio.sleep(0.3)
+        line1 += "ﾁﾝｯ "
+        line2 += r 
 
-    await ctx.send("ﾁﾝｯ")
-    await ctx.send(txt)
+        await message.edit(content=line1 + "\n" + line2)
 
     if check_match(results):
         await ctx.send(GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + " < Congrats...")
