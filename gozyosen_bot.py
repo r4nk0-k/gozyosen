@@ -241,8 +241,23 @@ async def do_slot(marks, ctx):
     line2 = ""
     message = await ctx.send("ｸﾞﾙｸﾞﾙｸﾞﾙｸﾞﾙ...")
     message2 = None
-    for r in results:
+    for index, r in enumerate(results):
         await asyncio.sleep(0.3)
+        if results[0] == results[1] and index == len(results) - 1:
+            line_reach = line1
+            line_reach += "ﾘｰﾁ！"
+            await message.edit(content=line_reach)
+
+            performance_num = random.randint(10,15)
+            for index in range(performance_num):
+                if index == performance_num - 1:
+                    await message2.edit(content=line2 + MARKS_SLOT[MARKS_SLOT.index(results[0])])
+                    await asyncio.sleep(1)
+                else:
+                    mark_index = random.randint(0, len(MARKS_SLOT) - 1)
+                    await message2.edit(content=line2 + MARKS_SLOT[mark_index])
+                    await asyncio.sleep(0.3)
+        
         line1 += "ﾁﾝｯ "
         line2 += r 
 
