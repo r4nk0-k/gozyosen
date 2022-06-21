@@ -6,6 +6,8 @@ import yaml
 import random
 import asyncio
 
+import text_to_voice
+
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix='&', intents=intents)
 
@@ -200,6 +202,12 @@ async def on_raw_reaction_remove(payload):
         embed.set_field_at(select_num, name=embed.fields[select_num].name, value=value)
 
         await message.edit(embed = embed)
+
+
+@bot.event
+async def on_message(message):
+    await text_to_voice.text_to_speech(message)
+    await bot.process_commands(message)
 
 # //////////////////////////////////////////////////////////////////////
 # utility 
