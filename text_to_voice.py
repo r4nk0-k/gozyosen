@@ -24,7 +24,7 @@ async def text_to_speech(message):
 def tts(filename, message):
     synthesis_input = texttospeech.SynthesisInput(text=message)
     voice = texttospeech.VoiceSelectionParams(
-            language_code='ja-JP', name='ja-JP-Wavenet-A'
+            language_code='ja-JP', name='ja-JP-Standard-A'
             )
     audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3, speaking_rate=1.2
