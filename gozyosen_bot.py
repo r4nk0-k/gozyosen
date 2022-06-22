@@ -203,7 +203,6 @@ async def on_raw_reaction_remove(payload):
 
         await message.edit(embed = embed)
 
-
 @bot.event
 async def on_message(message):
     await text_to_voice.text_to_speech(message)
