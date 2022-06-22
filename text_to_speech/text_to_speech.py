@@ -1,5 +1,4 @@
 from discord.ext import commands
-from discord.commands import slash_command
 from discord.channel import VoiceChannel
 import discord
 import asyncio
@@ -8,9 +7,9 @@ from google.cloud import texttospeech
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcp-key.json'
 tts_client = texttospeech.TextToSpeechClient()
+ENABLE_CHANNELS = [766330592441794642] # todo settings.json的なのに出す
 
-class TextToSpeech(commands.Cog)
-    ENABLE_CHANNELS = [] # todo
+class TextToSpeech(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.voice_client = None;
@@ -44,7 +43,7 @@ class TextToSpeech(commands.Cog)
             await self.voice_client.disconnect()
             self.voice_client = None
 
-    def __tts(filename, message):
+    def __tts(self, filename, message):
         synthesis_input = texttospeech.SynthesisInput(text=message)
         voice = texttospeech.VoiceSelectionParams(
                 language_code='ja-JP', name='ja-JP-Standard-A'
@@ -57,3 +56,6 @@ class TextToSpeech(commands.Cog)
                 )
         with open(filename, 'wb') as out:
             out.write(response.audio_content)
+
+def setup(bot):
+    return bot.add_cog(TextToSpeech(bot))

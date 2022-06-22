@@ -71,5 +71,5 @@ if __name__ == "__main__":
     token = yaml_file['token_gozyosen']
     bot.load_extension
     for cog in COGS:
-        await bot.load_extension(cog)
+        bot.load_extension(cog)
     bot.run(token)
