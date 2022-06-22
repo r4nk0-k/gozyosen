@@ -10,11 +10,16 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcp-key.json'
 tts_client = texttospeech.TextToSpeechClient()
 
 class TextToSpeech(commands.Cog)
+    ENABLE_CHANNELS = [] # todo
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener(name='on_message')
     async def read_message(self, message):
+        # 指定されたチャンネルのメッセージのみ再生
+        if message.channel.id not in ENABLE_CHANNELS:
+            return
+
         if message.guild.voice_client is None and message.author.voice is not None:
             await message.author.voice.channel.connect()
         elif message.guild.voice_client:
