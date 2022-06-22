@@ -13,6 +13,7 @@ class TextToSpeech(commands.Cog)
     ENABLE_CHANNELS = [] # todo
     def __init__(self, bot):
         self.bot = bot
+        self.voice_client = None;
 
     @commands.Cog.listener(name='on_message')
     async def read_message(self, message):
@@ -22,6 +23,7 @@ class TextToSpeech(commands.Cog)
 
         if message.guild.voice_client is None and message.author.voice is not None:
             await message.author.voice.channel.connect()
+            self.voice_client = message.guild.voice_client
         elif message.guild.voice_client:
             text = message.content
             text = text.replace('\n', '、')
@@ -31,6 +33,16 @@ class TextToSpeech(commands.Cog)
             filename = f'tmp/{str(message.guild.voice_client.channel.id)}.mp3'
             self.__tts(filename, text)
             message.guild.voice_client.play(discord.FFmpegPCMAudio(filename))
+
+    # 誰もいなくなったら退出
+    @commands.Cog.listener(name='on_voice_state_update')
+    async def disconnect_with_empty_channel(self, member, before, after):
+        if self.voice_client is None:
+            return
+
+        if before.channel.id == self.voice_client.channel.id and not before.channel.members:
+            await self.voice_client.disconnect()
+            self.voice_client = None
 
     def __tts(filename, message):
         synthesis_input = texttospeech.SynthesisInput(text=message)
