@@ -6,10 +6,13 @@ import yaml
 from gozyosen_slot import gozyosen_slot as gs
 from poll import poll as pl
 
-import text_to_voice
-
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix='&', intents=intents)
+
+# 今後COG経由でソースファイルを増やす場合はここを弄ればおｋ
+COGS = [
+    'text_to_speech.text_to_speech'
+]
 
 # //////////////////////////////////////////////////////////////////////
 # commands 
@@ -66,4 +69,7 @@ async def on_raw_reaction_remove(payload):
 if __name__ == "__main__":
     yaml_file = yaml.load(open('token.yaml').read(), Loader=yaml.SafeLoader)
     token = yaml_file['token_gozyosen']
+    bot.load_extension
+    for cog in COGS:
+        await bot.load_extension(cog)
     bot.run(token)
