@@ -1,0 +1,3 @@
+text_to_speech:
+  gcp_credential_path: 'gcp-key.json'
+  enable_channels: [766330592441794642]

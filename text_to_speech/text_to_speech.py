@@ -7,17 +7,20 @@ from google.cloud import texttospeech
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcp-key.json'
 tts_client = texttospeech.TextToSpeechClient()
-ENABLE_CHANNELS = [766330592441794642] # todo settings.json的なのに出す
 
 class TextToSpeech(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.voice_client = None;
 
+        settings_info = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['text_to_speech']
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = settings_info['gcp_credential_path']
+        self.ENABLE_CHANNELS = settings_info['enable_channels']
+
     @commands.Cog.listener(name='on_message')
     async def read_message(self, message):
         # 指定されたチャンネルのメッセージのみ再生
-        if message.channel.id not in ENABLE_CHANNELS:
+        if message.channel.id not in self.ENABLE_CHANNELS:
             return
 
         if self.voice_client is None and message.author.voice is not None:
