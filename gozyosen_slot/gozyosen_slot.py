@@ -6,7 +6,7 @@ import yaml
 # //////////////////////////////////////////////////////////////////////
 # constant definition
 
-slot_settings = yaml.load(open('token.yaml').read(), Loader=yaml.SafeLoader)['gozyosen_slot']
+slot_settings = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['gozyosen_slot']
 GOJO_EMOJI = slot_settings['emoji']['gojo']
 MARKS = slot_settings['emoji']['slot_marks_gojo']
 MARKS_SLOT = slot_settings['emoji']['slot_marks']

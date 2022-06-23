@@ -3,8 +3,11 @@ from discord.channel import VoiceChannel
 import discord
 import asyncio
 import os
+import yaml
 from google.cloud import texttospeech
 
+settings_info = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['text_to_speech']
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = settings_info['gcp_credential_path']
 tts_client = texttospeech.TextToSpeechClient()
 
 class TextToSpeech(commands.Cog):
@@ -12,8 +15,6 @@ class TextToSpeech(commands.Cog):
         self.bot = bot
         self.voice_client = None;
 
-        settings_info = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['text_to_speech']
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = settings_info['gcp_credential_path']
         self.ENABLE_CHANNELS = settings_info['enable_channels']
 
     @commands.Cog.listener(name='on_message')
