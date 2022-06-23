@@ -20,7 +20,7 @@ class TextToSpeech(commands.Cog):
         if message.channel.id not in ENABLE_CHANNELS:
             return
 
-        if message.guild.voice_client is None and message.author.voice is not None:
+        if self.voice_client is None and message.author.voice is not None:
             await message.author.voice.channel.connect()
             self.voice_client = message.guild.voice_client
         elif message.guild.voice_client:
@@ -39,7 +39,7 @@ class TextToSpeech(commands.Cog):
         if self.voice_client is None:
             return
 
-        if before.channel.id == self.voice_client.channel.id and not before.channel.members:
+        if before.channel.id == self.voice_client.channel.id and len(before.channel.members) == 1:
             await self.voice_client.disconnect()
             self.voice_client = None
 
