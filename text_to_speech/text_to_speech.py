@@ -5,7 +5,6 @@ import asyncio
 import os
 from google.cloud import texttospeech
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcp-key.json'
 tts_client = texttospeech.TextToSpeechClient()
 
 class TextToSpeech(commands.Cog):
