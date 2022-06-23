@@ -33,12 +33,9 @@ class TextToSpeech(commands.Cog):
             await message.author.voice.channel.connect()
             self.voice_client = message.guild.voice_client
 
-        # 発言者と同じボイチャに繋ぎ直す
+        # 発言者と同じボイチャに移動する
         if self.voice_client.channel.id not is message.author.voice.channel.id:
-            await self.voice_client.disconnect()
-            await asyncio.speep(0.5)
-            await message.author.voice.channel.connect()
-            self.voice_client = message.guild.voice_client
+            await self.voice_client.move_to(message.author.voice.channel)
 
         text = message.content
         text = text.replace('\n', '、')
