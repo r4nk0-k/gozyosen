@@ -25,7 +25,18 @@ class TextToSpeech(commands.Cog):
         if message.channel.id not in ENABLE_CHANNELS:
             return
 
-        if self.voice_client is None and message.author.voice is not None:
+        # 発言者がボイチャにいない
+        if message.author.voice is None:
+            return
+
+        if self.voice_client is None:
+            await message.author.voice.channel.connect()
+            self.voice_client = message.guild.voice_client
+
+        # 発言者と同じボイチャに繋ぎ直す
+        if self.voice_client.channel.id not is message.author.voice.channel.id:
+            await self.voice_client.disconnect()
+            await asyncio.speep(0.5)
             await message.author.voice.channel.connect()
             self.voice_client = message.guild.voice_client
 
