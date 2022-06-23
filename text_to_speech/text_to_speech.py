@@ -23,15 +23,15 @@ class TextToSpeech(commands.Cog):
         if self.voice_client is None and message.author.voice is not None:
             await message.author.voice.channel.connect()
             self.voice_client = message.guild.voice_client
-        elif message.guild.voice_client:
-            text = message.content
-            text = text.replace('\n', '、')
-            
-            while message.guild.voice_client.is_playing():
-                await asyncio.sleep(0.5)
-            filename = f'tmp/{str(message.guild.voice_client.channel.id)}.mp3'
-            self.__tts(filename, text)
-            message.guild.voice_client.play(discord.FFmpegPCMAudio(filename))
+
+        text = message.content
+        text = text.replace('\n', '、')
+        
+        while message.guild.voice_client.is_playing():
+            await asyncio.sleep(0.5)
+        filename = f'tmp/{str(message.guild.voice_client.channel.id)}.mp3'
+        self.__tts(filename, text)
+        message.guild.voice_client.play(discord.FFmpegPCMAudio(filename))
 
     # 誰もいなくなったら退出
     @commands.Cog.listener(name='on_voice_state_update')
