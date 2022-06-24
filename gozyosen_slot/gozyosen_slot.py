@@ -14,30 +14,38 @@ MARKS_WACCA = slot_settings['emoji']['wacca']
 
 # //////////////////////////////////////////////////////////////////////
 # commands 
-async def wacca(ctx):
-    results = lottery(MARKS_WACCA, 4)
-    txt = ""
-    for r in results:
-        txt = txt + r + " "
-    await ctx.send(txt)
 
-async def gozyosen_slot(ctx):
-    await do_slot(MARKS, ctx)
+class GozyosenSlot(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
 
-async def slot(ctx):
-    options = ctx.message.content.split()
+    @commands.command(name="素敵だね")
+    async def wacca(self, ctx):
+        results = lottery(MARKS_WACCA, 4)
+        txt = ""
+        for r in results:
+            txt = txt + r + " "
+        await ctx.send(txt)
 
-    for option in options:
-        if option == "-l":
-            txt = "図柄一覧\n"
-            for mark in MARKS_SLOT:
-                txt = txt + mark
+    @bot.command(name="ごじょせんスロット")
+    async def gozyosen_slot(self, ctx):
+        await do_slot(MARKS, ctx)
 
-            await ctx.send(txt)
-            await ctx.send("当選確率: 1/" + str(pow(len(MARKS_SLOT), 3)))
-            return
+    @bot.command(aliases=['s'])
+    async def slot(self. ctx):
+        options = ctx.message.content.split()
 
-    await do_slot(MARKS_SLOT, ctx)
+        for option in options:
+            if option == "-l":
+                txt = "図柄一覧\n"
+                for mark in MARKS_SLOT:
+                    txt = txt + mark
+
+                await ctx.send(txt)
+                await ctx.send("当選確率: 1/" + str(pow(len(MARKS_SLOT), 3)))
+                return
+
+        await do_slot(MARKS_SLOT, ctx)
 
 # //////////////////////////////////////////////////////////////////////
 # utility
@@ -91,3 +99,6 @@ async def do_slot(marks, ctx):
 
     if check_match(results):
         await ctx.send(GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + GOJO_EMOJI + " < Congrats...")
+
+def setup(bot):
+    return bot.add_cog(GozyosenSlot(bot))
