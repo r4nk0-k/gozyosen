@@ -3,6 +3,7 @@ text_to_speech:
   enable_channels: []
 
 gozyosen_slot:
+  enable_channels: []
   emoji:
     gojo: ""
     slot_marks_gojo: []
