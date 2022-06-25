@@ -34,7 +34,7 @@ class TextToSpeech(commands.Cog):
             self.voice_client = message.guild.voice_client
 
         # 発言者と同じボイチャに移動する
-        if self.voice_client.channel.id not is message.author.voice.channel.id:
+        if self.voice_client.channel.id is not message.author.voice.channel.id:
             await self.voice_client.move_to(message.author.voice.channel)
 
         text = message.content
