@@ -1,0 +1,10 @@
+text_to_speech:
+  gcp_credential_path: 'hoge.json'
+  enable_channels: []
+
+gozyosen_slot:
+  emoji:
+    gojo: ""
+    slot_marks_gojo: []
+    slot_marks: []
+    wacca: []

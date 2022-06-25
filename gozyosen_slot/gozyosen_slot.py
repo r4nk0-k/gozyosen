@@ -1,13 +1,16 @@
 from discord.ext import commands
 import random
 import asyncio
+import yaml
 
 # //////////////////////////////////////////////////////////////////////
 # constant definition
-GOJO_EMOJI = "<:gojo:836228626957074453>"
-MARKS = ["<:emoji_48:986146778279718912>", "<:gojo:836228626957074453>"]
-MARKS_SLOT = ["<:emoji_47:981211597093621771>", "<:emoji_46:981211581587279883>", "<:dayu_coume:929077269568294934>", "<:koume_another:937032580182728774>", "<:fushigidane:838103311734669393>", "<:seikintv:885186342907170906>", "<:chiikawa_bakemon:929075742296399954>", "<:emoji_48:986146778279718912>", "<:gojo:836228626957074453>"]
-MARKS_WACCA = ["<:su:986850329998028831>", "<:teki:986850365951578115>", "<:da:986850393357172757>", "<:ne:986850420439810078>"]
+
+slot_settings = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['gozyosen_slot']
+GOJO_EMOJI = slot_settings['emoji']['gojo']
+MARKS = slot_settings['emoji']['slot_marks_gojo']
+MARKS_SLOT = slot_settings['emoji']['slot_marks']
+MARKS_WACCA = slot_settings['emoji']['wacca']
 
 # //////////////////////////////////////////////////////////////////////
 # commands 

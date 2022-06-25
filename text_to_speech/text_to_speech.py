@@ -3,11 +3,13 @@ from discord.channel import VoiceChannel
 import discord
 import asyncio
 import os
+import yaml
 from google.cloud import texttospeech
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcp-key.json'
+settings_info = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['text_to_speech']
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = settings_info['gcp_credential_path']
 tts_client = texttospeech.TextToSpeechClient()
-ENABLE_CHANNELS = [766330592441794642] # todo settings.json的なのに出す
+ENABLE_CHANNELS = settings_info['enable_channels']
 
 class TextToSpeech(commands.Cog):
     def __init__(self, bot):
