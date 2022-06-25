@@ -11,6 +11,7 @@ GOJO_EMOJI = slot_settings['emoji']['gojo']
 MARKS = slot_settings['emoji']['slot_marks_gojo']
 MARKS_SLOT = slot_settings['emoji']['slot_marks']
 MARKS_WACCA = slot_settings['emoji']['wacca']
+ENABLE_CHANNELS = slot_settings['enable_channels']
 
 # //////////////////////////////////////////////////////////////////////
 # commands 
