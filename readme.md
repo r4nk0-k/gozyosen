@@ -9,3 +9,4 @@
     - `pip install discord[voice]`
     - `pip install google-cloud-texttospeech`
     - `apt install ffmpeg`
+
