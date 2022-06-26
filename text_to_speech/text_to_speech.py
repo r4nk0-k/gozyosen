@@ -14,7 +14,10 @@ ENABLE_CHANNELS = settings_info['enable_channels']
 class TextToSpeech(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.voice_client = None;
+        self.voice_client = None
+
+        self.speed = 1
+        self.pitch = 1
 
     @commands.Cog.listener(name='on_message')
     async def read_message(self, message):
@@ -22,9 +25,17 @@ class TextToSpeech(commands.Cog):
         if message.channel.id not in ENABLE_CHANNELS:
             return
 
-        if self.voice_client is None and message.author.voice is not None:
+        # 発言者がボイチャにいない
+        if message.author.voice is None:
+            return
+
+        if self.voice_client is None:
             await message.author.voice.channel.connect()
             self.voice_client = message.guild.voice_client
+
+        # 発言者と同じボイチャに移動する
+        if self.voice_client.channel.id is not message.author.voice.channel.id:
+            await self.voice_client.move_to(message.author.voice.channel)
 
         text = message.content
         text = text.replace('\n', '、')
@@ -45,13 +56,25 @@ class TextToSpeech(commands.Cog):
             await self.voice_client.disconnect()
             self.voice_client = None
 
+    # 読み上げ速度・ピッチの変換
+    # gcpのttxが受け取れる範囲に丸めこむ
+    @commands.command()
+    async def voice_pitch(self, pitch):
+        self.pitch = max(-20 ,min(20 ,float(pitch)))
+
+    @commands.command()
+    async def voice_speed(self, speed):
+        self.speed = max(0.25 ,min(4.0 ,float(speed)))
+
     def __tts(self, filename, message):
         synthesis_input = texttospeech.SynthesisInput(text=message)
         voice = texttospeech.VoiceSelectionParams(
                 language_code='ja-JP', name='ja-JP-Standard-A'
                 )
         audio_config = texttospeech.AudioConfig(
-                audio_encoding=texttospeech.AudioEncoding.MP3, speaking_rate=1.2
+                audio_encoding=texttospeech.AudioEncoding.MP3,
+                speaking_rate=self.speed,
+                pitch=self.pitch
                 )
         response = tts_client.synthesize_speech(
                 input=synthesis_input, voice=voice, audio_config=audio_config
