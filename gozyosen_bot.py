@@ -3,7 +3,6 @@ import discord
 import re
 import datetime
 import yaml
-from gozyosen_slot import gozyosen_slot as gs
 from poll import poll as pl
 
 intents = discord.Intents.default()
@@ -11,24 +10,12 @@ bot = commands.Bot(command_prefix='&', intents=intents)
 
 # 今後COG経由でソースファイルを増やす場合はここを弄ればおｋ
 COGS = [
+    'gozyosen_slot.gozyosen_slot'
     'text_to_speech.text_to_speech'
 ]
 
 # //////////////////////////////////////////////////////////////////////
 # commands 
-@bot.command(name="素敵だね")
-async def wacca(ctx):
-    await gs.wacca(ctx)
-
-@bot.command(name="ごじょせんスロット")
-async def slot(ctx):
-    await gs.gozyosen_slot(ctx)
-    
-
-@bot.command(aliases=['s'])
-async def slot(ctx):
-    await gs.slot(ctx)
-
 @bot.command()
 async def poll(ctx, question = None):
     await pl.poll(ctx, question)
