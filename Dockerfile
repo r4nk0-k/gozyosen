@@ -1,6 +1,10 @@
 FROM python:3.9
-USER root
 WORKDIR /app
-
 COPY . /app
-CMD ["/bin/bash"]
+
+RUN pip install --upgrade pip
+RUN pip install discord
+RUN pip install pyyaml
+RUN pip install google-cloud-texttospeech
+
+CMD ["python3", "gozyosen_bot.py"]
