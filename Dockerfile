@@ -8,3 +8,4 @@ RUN pip install pyyaml
 RUN pip install google-cloud-texttospeech
 
 CMD ["python3", "gozyosen_bot.py"]
+
