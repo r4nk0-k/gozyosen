@@ -1,6 +1,7 @@
 token.yaml
 settings.yaml
-tmp/* !.gitkeep
+tmp/*
+!*.gitkeep
 gcp-key.json
 
 **/__pycache__
