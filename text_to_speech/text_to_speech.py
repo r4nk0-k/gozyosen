@@ -38,6 +38,10 @@ class TextToSpeech(commands.Cog):
             await self.voice_client.move_to(message.author.voice.channel)
 
         text = message.content
+        
+        if text.startswith('&')
+            return
+
         text = text.replace('\n', '、')
         
         while message.guild.voice_client.is_playing():
