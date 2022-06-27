@@ -39,7 +39,7 @@ class TextToSpeech(commands.Cog):
 
         text = message.content
         
-        if text.startswith('&')
+        if text.startswith('&'):
             return
 
         text = text.replace('\n', '、')
@@ -63,11 +63,11 @@ class TextToSpeech(commands.Cog):
     # 読み上げ速度・ピッチの変換
     # gcpのttxが受け取れる範囲に丸めこむ
     @commands.command()
-    async def voice_pitch(self, pitch):
+    async def voice_pitch(self, ctx, pitch):
         self.pitch = max(-20 ,min(20 ,float(pitch)))
 
     @commands.command()
-    async def voice_speed(self, speed):
+    async def voice_speed(self, ctx, speed):
         self.speed = max(0.25 ,min(4.0 ,float(speed)))
 
     def __tts(self, filename, message):
