@@ -49,7 +49,7 @@ class TextToSpeech(commands.Cog):
         filename = f'tmp/{str(message.guild.voice_client.channel.id)}.mp3'
 
         # 月間400万文字超えたら金が発生するので文字数制限を一応
-        if len(text) <= 200:
+        if len(text) >= 200:
             text = text[0:200]
 
         self.__tts(filename, text)
