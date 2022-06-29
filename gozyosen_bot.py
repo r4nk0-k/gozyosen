@@ -10,7 +10,7 @@ bot = commands.Bot(command_prefix='&', intents=intents)
 
 # 今後COG経由でソースファイルを増やす場合はここを弄ればおｋ
 COGS = [
-    'gozyosen_slot.gozyosen_slot'
+    'gozyosen_slot.gozyosen_slot',
     'text_to_speech.text_to_speech'
 ]
 

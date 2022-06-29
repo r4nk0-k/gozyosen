@@ -38,11 +38,20 @@ class TextToSpeech(commands.Cog):
             await self.voice_client.move_to(message.author.voice.channel)
 
         text = message.content
+        
+        if text.startswith('&'):
+            return
+
         text = text.replace('\n', '、')
         
         while message.guild.voice_client.is_playing():
             await asyncio.sleep(0.5)
         filename = f'tmp/{str(message.guild.voice_client.channel.id)}.mp3'
+
+        # 月間400万文字超えたら金が発生するので文字数制限を一応
+        if len(text) >= 200:
+            text = text[0:200]
+
         self.__tts(filename, text)
         message.guild.voice_client.play(discord.FFmpegPCMAudio(filename))
 
@@ -59,11 +68,11 @@ class TextToSpeech(commands.Cog):
     # 読み上げ速度・ピッチの変換
     # gcpのttxが受け取れる範囲に丸めこむ
     @commands.command()
-    async def voice_pitch(self, pitch):
+    async def voice_pitch(self, ctx, pitch):
         self.pitch = max(-20 ,min(20 ,float(pitch)))
 
     @commands.command()
-    async def voice_speed(self, speed):
+    async def voice_speed(self, ctx, speed):
         self.speed = max(0.25 ,min(4.0 ,float(speed)))
 
     def __tts(self, filename, message):

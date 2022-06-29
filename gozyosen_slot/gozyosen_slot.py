@@ -28,12 +28,12 @@ class GozyosenSlot(commands.Cog):
             txt = txt + r + " "
         await ctx.send(txt)
 
-    @bot.command(name="ごじょせんスロット")
+    @commands.command(name="ごじょせんスロット")
     async def gozyosen_slot(self, ctx):
         await do_slot(MARKS, ctx)
 
-    @bot.command(aliases=['s'])
-    async def slot(self. ctx):
+    @commands.command(aliases=['s'])
+    async def slot(self, ctx):
         options = ctx.message.content.split()
 
         for option in options:
