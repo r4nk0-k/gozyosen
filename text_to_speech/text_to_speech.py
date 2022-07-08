@@ -5,6 +5,7 @@ import asyncio
 import os
 import yaml
 from google.cloud import texttospeech
+from replace_text import replace_text
 
 settings_info = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['text_to_speech']
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = settings_info['gcp_credential_path']
@@ -18,6 +19,7 @@ class TextToSpeech(commands.Cog):
 
         self.speed = 1
         self.pitch = 1
+        self.replaceText = replace_text.ReplaceText()
 
     @commands.Cog.listener(name='on_message')
     async def read_message(self, message):
@@ -47,6 +49,9 @@ class TextToSpeech(commands.Cog):
         while message.guild.voice_client.is_playing():
             await asyncio.sleep(0.5)
         filename = f'tmp/{str(message.guild.voice_client.channel.id)}.mp3'
+
+        # 辞書を基に読み上げ内容変更
+        text = self.replaceText.replace(text)
 
         # 月間400万文字超えたら金が発生するので文字数制限を一応
         if len(text) >= 200:
@@ -90,6 +95,11 @@ class TextToSpeech(commands.Cog):
                 )
         with open(filename, 'wb') as out:
             out.write(response.audio_content)
+
+    @commands.command()
+    async def dict(self, command, beforeText, aftetText):
+        if command == "add":
+            self.replaceText.addReplaceText(beforeText, afterText)
 
 def setup(bot):
     return bot.add_cog(TextToSpeech(bot))
