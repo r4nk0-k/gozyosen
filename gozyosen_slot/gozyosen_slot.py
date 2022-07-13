@@ -44,13 +44,27 @@ class GozyosenSlot(commands.Cog):
                     txt = txt + mark
 
                 await ctx.send(txt)
-                await ctx.send("当選確率: 1/" + PROBABILITY)
+                await ctx.send("当選確率: 1/" + str(PROBABILITY))
                 return
 
         await do_slot(MARKS_SLOT, ctx)
 
 # //////////////////////////////////////////////////////////////////////
 # utility
+def lottery_no_hit(marks, try_num):
+    results = []
+    for _ in range(try_num - 1):
+        index = random.randint(0, len(marks)-1)
+        results.append(marks[index])
+
+    while True:
+        index = random.randint(0, len(marks)-1)
+        if not marks[index] in results:
+            results.append(marks[index])
+            break
+
+    return results
+
 def lottery(marks, try_num):
     results = []
     for _ in range(try_num):
@@ -68,8 +82,13 @@ def check_match(results):
     return True
 
 async def do_slot(marks, ctx):
-    n = random.randint(0, PROBABILITY)
-    results = lottery(marks, 3)
+    n = random.randint(1, PROBABILITY)
+    if n == 1:
+        mark = random.randint(0, len(MARKS_SLOT))
+        results = [MARKS_SLOT[mark] for _ in range(3)]
+    else:
+        results = lottery_no_hit(marks, 3)
+
     line1 = ""
     line2 = ""
     message = await ctx.send("ｸﾞﾙｸﾞﾙｸﾞﾙｸﾞﾙ...")
