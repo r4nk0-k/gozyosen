@@ -74,10 +74,12 @@ class TextToSpeech(commands.Cog):
     # gcpのttxが受け取れる範囲に丸めこむ
     @commands.command()
     async def voice_pitch(self, ctx, pitch):
+        # 読み上げbotのピッチ変更 範囲は-20～20
         self.pitch = max(-20 ,min(20 ,float(pitch)))
 
     @commands.command()
     async def voice_speed(self, ctx, speed):
+        # 読み上げbotの速度変更 範囲は0.25～4.0
         self.speed = max(0.25 ,min(4.0 ,float(speed)))
 
     def __tts(self, filename, message):
@@ -98,6 +100,7 @@ class TextToSpeech(commands.Cog):
 
     @commands.command()
     async def dict(self, command, beforeText, aftetText):
+        # 読み上げbotの辞書登録
         if command == "add":
             self.replaceText.addReplaceText(beforeText, afterText)
 
