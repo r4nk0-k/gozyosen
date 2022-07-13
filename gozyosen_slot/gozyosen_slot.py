@@ -12,6 +12,7 @@ MARKS = slot_settings['emoji']['slot_marks_gojo']
 MARKS_SLOT = slot_settings['emoji']['slot_marks']
 MARKS_WACCA = slot_settings['emoji']['wacca']
 ENABLE_CHANNELS = slot_settings['enable_channels']
+PROBABILITY = slot_settings['probability']
 
 # //////////////////////////////////////////////////////////////////////
 # commands 
@@ -43,7 +44,7 @@ class GozyosenSlot(commands.Cog):
                     txt = txt + mark
 
                 await ctx.send(txt)
-                await ctx.send("当選確率: 1/" + str(pow(len(MARKS_SLOT), 3)))
+                await ctx.send("当選確率: 1/" + PROBABILITY)
                 return
 
         await do_slot(MARKS_SLOT, ctx)
@@ -52,7 +53,7 @@ class GozyosenSlot(commands.Cog):
 # utility
 def lottery(marks, try_num):
     results = []
-    for leel in range(try_num):
+    for _ in range(try_num):
         index = random.randint(0, len(marks)-1)
         results.append(marks[index])
 
@@ -67,11 +68,13 @@ def check_match(results):
     return True
 
 async def do_slot(marks, ctx):
+    n = random.randint(0, PROBABILITY)
     results = lottery(marks, 3)
     line1 = ""
     line2 = ""
     message = await ctx.send("ｸﾞﾙｸﾞﾙｸﾞﾙｸﾞﾙ...")
     message2 = None
+
     for index, r in enumerate(results):
         await asyncio.sleep(0.3)
         if results[0] == results[1] and index == len(results) - 1:
