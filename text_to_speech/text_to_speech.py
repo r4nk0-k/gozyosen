@@ -5,7 +5,7 @@ import asyncio
 import os
 import yaml
 from google.cloud import texttospeech
-from replace_text import replace_text
+from text_to_speech import replace_text
 
 settings_info = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['text_to_speech']
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = settings_info['gcp_credential_path']
@@ -99,8 +99,12 @@ class TextToSpeech(commands.Cog):
             out.write(response.audio_content)
 
     @commands.command()
-    async def dict(self, command, beforeText, aftetText):
+    async def dict(self, ctx, *args):
         # 読み上げbotの辞書登録
+        print(args)
+        command = args[0]
+        beforeText = args[1]
+        afterText = args[2]
         if command == "add":
             self.replaceText.addReplaceText(beforeText, afterText)
 
