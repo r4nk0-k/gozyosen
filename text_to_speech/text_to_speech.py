@@ -100,8 +100,7 @@ class TextToSpeech(commands.Cog):
 
     @commands.command()
     async def dict(self, ctx, *args):
-        # 読み上げbotの辞書登録
-        print(args)
+        # 読み上げbotの辞書登録 useage: &dict add "beforeText" "afterText"
         command = args[0]
         beforeText = args[1]
         afterText = args[2]
