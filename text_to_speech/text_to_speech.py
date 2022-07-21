@@ -5,6 +5,7 @@ import asyncio
 import os
 import yaml
 from google.cloud import texttospeech
+from text_to_speech import replace_text
 
 settings_info = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['text_to_speech']
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = settings_info['gcp_credential_path']
@@ -18,6 +19,7 @@ class TextToSpeech(commands.Cog):
 
         self.speed = 1
         self.pitch = 1
+        self.replaceText = replace_text.ReplaceText()
 
     @commands.Cog.listener(name='on_message')
     async def read_message(self, message):
@@ -48,6 +50,9 @@ class TextToSpeech(commands.Cog):
             await asyncio.sleep(0.5)
         filename = f'tmp/{str(message.guild.voice_client.channel.id)}.mp3'
 
+        # 辞書を基に読み上げ内容変更
+        text = self.replaceText.replace(text)
+
         # 月間400万文字超えたら金が発生するので文字数制限を一応
         if len(text) >= 200:
             text = text[0:200]
@@ -69,10 +74,12 @@ class TextToSpeech(commands.Cog):
     # gcpのttxが受け取れる範囲に丸めこむ
     @commands.command()
     async def voice_pitch(self, ctx, pitch):
+        # 読み上げbotのピッチ変更 範囲は-20～20
         self.pitch = max(-20 ,min(20 ,float(pitch)))
 
     @commands.command()
     async def voice_speed(self, ctx, speed):
+        # 読み上げbotの速度変更 範囲は0.25～4.0
         self.speed = max(0.25 ,min(4.0 ,float(speed)))
 
     def __tts(self, filename, message):
@@ -90,6 +97,15 @@ class TextToSpeech(commands.Cog):
                 )
         with open(filename, 'wb') as out:
             out.write(response.audio_content)
+
+    @commands.command()
+    async def dict(self, ctx, *args):
+        # 読み上げbotの辞書登録 useage: &dict add "beforeText" "afterText"
+        command = args[0]
+        beforeText = args[1]
+        afterText = args[2]
+        if command == "add":
+            self.replaceText.addReplaceText(beforeText, afterText)
 
 def setup(bot):
     return bot.add_cog(TextToSpeech(bot))

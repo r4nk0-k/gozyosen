@@ -4,4 +4,6 @@ tmp/*
 !*.gitkeep
 gcp-key.json
 
+text_to_speech/replaceTextList.csv
+
 **/__pycache__
