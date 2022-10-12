@@ -127,4 +127,4 @@ def get_slot_result(marks, probability, slot_length):
 
 
 def setup(bot):
-    return bot.add_cog(GozyosenSlot(bot))
+    return bot.add_cog(GozyosenSlot(bot, 'settings.yaml'))

@@ -32,9 +32,14 @@ class SlotTest(unittest.TestCase):
         result = gozyosen_slot.get_slot_result(self.marks, 10, 3)
         self.assertEqual(['e', 'e', 'e'], result)
 
-        randint_mock.side_effect = [10, 4, 3, 2, 1]
-        result = gozyosen_slot.get_slot_result(self.marks, 10, 3)
-        self.assertEqual(['e', 'd', 'c'], result)
+        randint_mock.side_effect = [1, 4, 3, 2, 1]
+        result = gozyosen_slot.get_slot_result(self.marks, 50, 3)
+        self.assertEqual(['e', 'e', 'e'], result)
+
+        for i in range(2, 50):
+            randint_mock.side_effect = [i+1, 4, 3, 2, 1]
+            result = gozyosen_slot.get_slot_result(self.marks, 50, 3)
+            self.assertEqual(['e', 'd', 'c'], result)
 
 
 if __name__ == '__main__':
