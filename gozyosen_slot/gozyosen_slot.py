@@ -48,8 +48,8 @@ class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
     async def do_slot(marks, ctx):
         n = random.randint(1, self.PROBABILITY)
         if n == 1:
-            mark = random.randint(0, len(self.MARKS_SLOT))
-            results = [self.MARKS_SLOT[mark] for _ in range(3)]
+            mark = random.randint(0, len(marks))
+            results = [marks[mark] for _ in range(3)]
         else:
             results = lottery_no_hit(marks, 3)
 
@@ -83,11 +83,11 @@ class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
         performance_num = random.randint(10,15)
         for index in range(performance_num):
             if index == performance_num - 1:
-                await message2.edit(content=line2 + self.MARKS_SLOT[self.MARKS_SLOT.index(results[0])])
+                await message2.edit(content=line2 + marks[marks.index(results[0])])
                 await asyncio.sleep(1)
             else:
-                mark_index = random.randint(0, len(self.MARKS_SLOT) - 1)
-                await message2.edit(content=line2 + self.MARKS_SLOT[mark_index])
+                mark_index = random.randint(0, len(marks) - 1)
+                await message2.edit(content=line2 + marks[mark_index])
                 await asyncio.sleep(0.3)
 
 # //////////////////////////////////////////////////////////////////////
