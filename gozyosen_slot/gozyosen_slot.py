@@ -61,19 +61,7 @@ class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
         for index, r in enumerate(results):
             await asyncio.sleep(0.3)
             if results[0] == results[1] and index == len(results) - 1:
-                line_reach = line1
-                line_reach += "ﾘｰﾁ！"
-                await message.edit(content=line_reach)
-
-                performance_num = random.randint(10,15)
-                for index in range(performance_num):
-                    if index == performance_num - 1:
-                        await message2.edit(content=line2 + self.MARKS_SLOT[self.MARKS_SLOT.index(results[0])])
-                        await asyncio.sleep(1)
-                    else:
-                        mark_index = random.randint(0, len(self.MARKS_SLOT) - 1)
-                        await message2.edit(content=line2 + self.MARKS_SLOT[mark_index])
-                        await asyncio.sleep(0.3)
+                await self.do_reach(marks, ctx)
             
             line1 += "ﾁﾝｯ "
             line2 += r 
@@ -86,6 +74,21 @@ class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
 
         if check_match(results):
             await ctx.send(self.GOJO_EMOJI + self.GOJO_EMOJI + self.GOJO_EMOJI + self.GOJO_EMOJI + self.GOJO_EMOJI + self.GOJO_EMOJI + " < Congrats...")
+
+    async def do_reach(marks, ctx):
+        line_reach = line1
+        line_reach += "ﾘｰﾁ！"
+        await message.edit(content=line_reach)
+
+        performance_num = random.randint(10,15)
+        for index in range(performance_num):
+            if index == performance_num - 1:
+                await message2.edit(content=line2 + self.MARKS_SLOT[self.MARKS_SLOT.index(results[0])])
+                await asyncio.sleep(1)
+            else:
+                mark_index = random.randint(0, len(self.MARKS_SLOT) - 1)
+                await message2.edit(content=line2 + self.MARKS_SLOT[mark_index])
+                await asyncio.sleep(0.3)
 
 # //////////////////////////////////////////////////////////////////////
 # utility
