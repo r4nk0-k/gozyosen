@@ -27,7 +27,7 @@ class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
 
     @commands.command(name="ごじょせんスロット")
     async def gozyosen_slot(self, ctx):
-        await self.do_slot(self.MARKS, ctx)
+        await self.do_slot(self.MARKS, ctx, self.PROBABILITY)
 
     @commands.command(aliases=['s'])
     async def slot(self, ctx):
@@ -43,10 +43,10 @@ class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
                 await ctx.send("当選確率: 1/" + str(self.PROBABILITY))
                 return
 
-        await self.do_slot(self.MARKS_SLOT, ctx)
+        await self.do_slot(self.MARKS_SLOT, ctx, self.PROBABILITY)
 
-    async def do_slot(marks, ctx):
-        n = random.randint(1, self.PROBABILITY)
+    async def do_slot(marks, ctx, probability):
+        n = random.randint(1, probability)
         if n == 1:
             mark = random.randint(0, len(marks))
             results = [marks[mark] for _ in range(3)]
