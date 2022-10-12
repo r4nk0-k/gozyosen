@@ -46,13 +46,7 @@ class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
         await self.do_slot(self.MARKS_SLOT, ctx, self.PROBABILITY)
 
     async def do_slot(marks, ctx, probability):
-        n = random.randint(1, probability)
-        if n == 1:
-            mark = random.randint(0, len(marks))
-            results = [marks[mark] for _ in range(3)]
-        else:
-            results = lottery_no_hit(marks, 3)
-
+        results = get_slot_result(marks, probability, 3)
         line1 = ""
         line2 = ""
         message = await ctx.send("ｸﾞﾙｸﾞﾙｸﾞﾙｸﾞﾙ...")
@@ -61,7 +55,10 @@ class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
         for index, r in enumerate(results):
             await asyncio.sleep(0.3)
             if results[0] == results[1] and index == len(results) - 1:
-                await self.do_reach(marks, ctx)
+                line_reach = line1
+                line_reach += "ﾘｰﾁ！"
+                await message.edit(content=line_reach)
+                await self.do_reach(marks, message2, line2, results)
             
             line1 += "ﾁﾝｯ "
             line2 += r 
@@ -75,19 +72,15 @@ class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
         if check_match(results):
             await ctx.send(self.GOJO_EMOJI + self.GOJO_EMOJI + self.GOJO_EMOJI + self.GOJO_EMOJI + self.GOJO_EMOJI + self.GOJO_EMOJI + " < Congrats...")
 
-    async def do_reach(marks, ctx):
-        line_reach = line1
-        line_reach += "ﾘｰﾁ！"
-        await message.edit(content=line_reach)
-
+    async def do_reach(marks, message, line, results):
         performance_num = random.randint(10,15)
         for index in range(performance_num):
             if index == performance_num - 1:
-                await message2.edit(content=line2 + marks[marks.index(results[0])])
+                await message.edit(content=line + marks[marks.index(results[0])])
                 await asyncio.sleep(1)
             else:
                 mark_index = random.randint(0, len(marks) - 1)
-                await message2.edit(content=line2 + marks[mark_index])
+                await message.edit(content=line + marks[mark_index])
                 await asyncio.sleep(0.3)
 
 # //////////////////////////////////////////////////////////////////////
@@ -121,6 +114,16 @@ def check_match(results):
             return False
     
     return True
+
+def get_slot_result(marks, probability, slot_length):
+    n = random.randint(1, probability)
+    if n == 1:
+        mark = random.randint(0, len(marks))
+        results = [marks[mark] for _ in range(slot_length)]
+    else:
+        results = lottery_no_hit(marks, slot_length)
+
+    return results;
 
 
 def setup(bot):
