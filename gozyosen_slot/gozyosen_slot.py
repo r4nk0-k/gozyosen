@@ -6,10 +6,10 @@ import yaml
 # //////////////////////////////////////////////////////////////////////
 # commands 
 
-class GozyosenSlot(commands.Cog, yaml_path='settings.yaml'):
-    def __init__(self, bot):
+class GozyosenSlot(commands.Cog):
+    def __init__(self, bot, yaml_path):
         self.bot = bot
-        slot_settings = yaml.load(open('settings.yaml').read(), Loader=yaml.SafeLoader)['gozyosen_slot']
+        slot_settings = yaml.load(open(yaml_path).read(), Loader=yaml.SafeLoader)['gozyosen_slot']
         self.GOJO_EMOJI = slot_settings['emoji']['gojo']
         self.MARKS = slot_settings['emoji']['slot_marks_gojo']
         self.MARKS_SLOT = slot_settings['emoji']['slot_marks']
